@@ -19,11 +19,11 @@ public class RsaToolsTest {
     public void writePrivateKeyAndPublicKey() throws Exception {
         Map<String, Key> keyMap = rsaTools.generateKeyPair(2048);
         PrivateKey privateKey = (PrivateKey) keyMap.get(RsaTools.PRIVATE_KEY);
-        String privateKeyPem = rsaTools.pemKey(privateKey);
+        String privateKeyPem = rsaTools.pemEncodingKey(privateKey);
         System.out.println(privateKeyPem);
 
         PublicKey publicKey = (PublicKey) keyMap.get(RsaTools.PUBLIC_KEY);
-        String publicKeyPem = rsaTools.pemKey(publicKey);
+        String publicKeyPem = rsaTools.pemEncodingKey(publicKey);
         System.out.println(publicKeyPem);
 
         String randomStr = UUID.randomUUID().toString();

@@ -25,7 +25,7 @@ public class RsaTools {
     public static final String PRIVATE_KEY = "PRIVATE_KEY";
 
     public String encrypt(String source, String publicKey) throws Exception {
-        Key key = readPublicKey(publicKey);
+        Key key = parsePublicKey(publicKey);
         Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] b = source.getBytes();
@@ -35,7 +35,7 @@ public class RsaTools {
     }
 
     public String decrypt(String encryptedText, String privateKey) throws Exception {
-        Key key = readPrivateKey(privateKey);
+        Key key = parsePrivateKey(privateKey);
         Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] b1 = Base64.getDecoder().decode(encryptedText.getBytes());
@@ -43,7 +43,7 @@ public class RsaTools {
         return new String(b);
     }
 
-    public PublicKey readPublicKey(String key) throws Exception {
+    public PublicKey parsePublicKey(String key) throws Exception {
         try (StringReader reader = new StringReader(key);
              PEMParser pemParser = new PEMParser(reader)) {
             SubjectPublicKeyInfo subjectPublicKeyInfo = (SubjectPublicKeyInfo) pemParser.readObject();
@@ -52,7 +52,7 @@ public class RsaTools {
         }
     }
 
-    public PrivateKey readPrivateKey(String key) throws Exception {
+    public PrivateKey parsePrivateKey(String key) throws Exception {
         try (StringReader reader = new StringReader(key);
              PEMParser pemParser = new PEMParser(reader)) {
             PEMKeyPair pemKeyPair = (PEMKeyPair) pemParser.readObject();
@@ -71,19 +71,19 @@ public class RsaTools {
         return keyMap;
     }
 
-    public String pemKey(Key key) throws Exception {
-        StringWriter sWrt = new StringWriter();
-        JcaPEMWriter pemWriter = new JcaPEMWriter(sWrt);
+    public String pemEncodingKey(Key key) throws Exception {
+        StringWriter stringWriter = new StringWriter();
+        JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
         pemWriter.writeObject(key);
         pemWriter.close();
-        return sWrt.toString();
+        return stringWriter.toString();
     }
 
     public Map<String, String> generatePemKeyPair(int keySize) throws Exception {
         Map<String, Key> keyMap = generateKeyPair(keySize);
         Map<String,String> result = new HashMap<>(2);
-        result.put(PUBLIC_KEY,pemKey(keyMap.get(PUBLIC_KEY)));
-        result.put(PRIVATE_KEY,pemKey(keyMap.get(PRIVATE_KEY)));
+        result.put(PUBLIC_KEY, pemEncodingKey(keyMap.get(PUBLIC_KEY)));
+        result.put(PRIVATE_KEY, pemEncodingKey(keyMap.get(PRIVATE_KEY)));
         return result;
     }
 
