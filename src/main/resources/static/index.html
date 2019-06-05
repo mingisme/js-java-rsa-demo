@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>JavaScript RSA Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="bin/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+
+      // Call this code when the page is done loading.
+      $(function() {
+
+        // Run a quick encryption/decryption when they click.
+        $('#testme').click(function() {
+
+          $.get("keys/any",function(data,status){
+             var publicKey = data.publicKey;
+             // Encrypt with the public key...
+             var encrypt = new JSEncrypt();
+             encrypt.setPublicKey(publicKey);
+             var plainText=$('#input').val();
+             var encrypted = encrypt.encrypt(plainText);
+             $('#output').val(encrypted);
+
+              $.ajax({
+                type:"POST",
+                url:"data/commit",
+                contentType:"application/json;charset=utf8",
+                data:JSON.stringify({"encryptedText":encrypted,"plainText":plainText}),
+                dataType:"json",
+                success:function(message){
+                   $('#result').html(message.message);
+                },
+                error:function(message){
+                    alert("Failed:"+JSON.stringify(message));
+                }
+              });
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <label for="input">Text to encrypt:</label><br/>
+    <textarea id="input" name="input" type="text" rows=4 cols=70>Test1234</textarea><br/>
+    <label for="input">Text encrypted:</label><br/>
+    <textarea id="output" name="output" type="text" rows=4 cols=70></textarea><br/>
+    <input id="testme" type="button" value="Encrypt" /><br/>
+    <div id="result"></div>
+  </body>
+</html>
