@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author ming.wang4@envision-digital.com
- * @date 2019-06-05
- */
 @RestController
 @RequestMapping("/data")
 public class SubmitController {

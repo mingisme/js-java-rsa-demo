@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
-/**
- * @author ming.wang4@envision-digital.com
- * @date 2019-06-05
- */
 @RestController
 @RequestMapping("/keys")
 public class KeyController {

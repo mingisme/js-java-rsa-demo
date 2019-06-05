@@ -6,10 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * @author ming.wang4@envision-digital.com
- * @date 2019-06-05
- */
 @Component
 public class IoTools {
 
