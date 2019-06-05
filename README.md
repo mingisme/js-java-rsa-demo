@@ -5,7 +5,7 @@ See also: https://github.com/travist/jsencrypt
 
 - Jsencrypt
 - Bouncycastle
-- Spring boot
+- Springboot
 
 
 
