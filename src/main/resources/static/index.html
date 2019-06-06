@@ -11,6 +11,7 @@
 
         // Run a quick encryption/decryption when they click.
         $('#testme').click(function() {
+           $('#result').html('');
 
           $.get("keys/any",function(data,status){
              var publicKey = data.publicKey;
