@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>JavaScript AES Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script type="text/javascript">
+
+       var iv = CryptoJS.enc.Utf8.parse('phjlknslfdhksldf');
+
+       function encrypt(data, key){
+            var encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return encrypted.toString();
+       }
+
+       function decrypt(encrypted, key){
+           var decrypted = CryptoJS.AES.decrypt(encrypted, CryptoJS.enc.Utf8.parse(key), {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+           });
+           return decrypted.toString(CryptoJS.enc.Utf8);
+       }
+
+
+       $(function () {
+        var data = "This is a secret";
+        var key = 'Test1234Test1234';
+
+        var encrypted = encrypt(data,key);
+        $("#p1").text("Encrypted: "+encrypted);
+        console.log(encrypted)
+
+        encrypted="CZ6cOggrrYjB56laTXKQTZEsEGm+NTEusYosLHQJr8U=";
+        var decrypted = decrypt(encrypted, key);
+        console.log(decrypted);
+        $("#p2").text("Decrypted: "+decrypted);
+    })
+
+
+
+    </script>
+</head>
+<body>
+    <div id="p1">
+    </div>
+    <div id="p2">
+    </div>
+</body>
+</html>

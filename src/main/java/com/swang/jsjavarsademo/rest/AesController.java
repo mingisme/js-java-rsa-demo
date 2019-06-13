@@ -13,36 +13,35 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/data")
-public class SubmitController {
+public class AesController {
+
 
     @Autowired
-    private RsaTools rsaTools;
+    private AesTools aesTools;
 
-    @Autowired
-    private IoTools ioTools;
-
-    @PostMapping("/commit")
+    @PostMapping("/aes")
     public Result createData(@RequestBody DataBean data) {
 
-        String privKeyString = ioTools.readResourceAsString("rsa_2048_priv.pem");
+        String key = data.plainText;
 
-        String encryptedResult = null;
         try {
-            String decryptText = rsaTools.decrypt(data.encryptedText, privKeyString);
-            if (!data.plainText.equals(decryptText)) {
-                throw new RuntimeException("decrypt failed");
-            }
+            String secret = aesTools.encrypt("This is a secret"+new Date(), key);
+
+            System.out.println(secret);
+
+            String decrypted=aesTools.decrypt(secret,key);
+
+            System.out.println(decrypted);
+
+            Result result = new Result();
+            result.code = "0";
+            result.message = secret;
+            return result;
         } catch (Exception e) {
-            e.printStackTrace();
             Result result = new Result();
             result.code = "1";
-            result.message = "failedxxx"+new Date();
+            result.message = e.getMessage();
             return result;
         }
-
-        Result result = new Result();
-        result.code = "0";
-        result.message = "successxx"+new Date();
-        return result;
     }
 }

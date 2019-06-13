@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <title>JavaScript RSA Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="bin/jsencrypt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script type="text/javascript">
+
+       var iv = CryptoJS.enc.Utf8.parse('phjlknslfdhksldf');
+
+
+        function encrypt(data, key){
+            var encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return encrypted.toString();
+       }
+
+       function decrypt(encrypted, key){
+           var decrypted = CryptoJS.AES.decrypt(encrypted, CryptoJS.enc.Utf8.parse(key), {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+           });
+           return decrypted.toString(CryptoJS.enc.Utf8);
+       }
+
+      // Call this code when the page is done loading.
+      $(function() {
+
+        // Run a quick encryption/decryption when they click.
+        $('#testme').click(function() {
+          $('#output').val('');
+          $('#result').html('');
+          var key=$('#input').val();
+          $.ajax({
+                type:"POST",
+                url:"data/aes",
+                contentType:"application/json;charset=utf8",
+                data:JSON.stringify({"encryptedText":"","plainText":key}),
+                dataType:"json",
+                success:function(message){
+
+                   if(message.code==="0"){
+                      $('#output').val(message.message);
+                      var plainText=decrypt(message.message, key);
+                      $('#result').html(plainText);
+                   }else{
+                      alert(message.message);
+                   }
+                },
+                error:function(message){
+                    alert("Failed:"+JSON.stringify(message));
+                }
+          });
+        });
+      });
+
+    </script>
+</head>
+<body>
+<label for="input">AES Key:</label><br/>
+<textarea id="input" name="input" type="text" rows=4 cols=70>Test1234Test1234</textarea><br/>
+<label for="input">Text encrypted:</label><br/>
+<textarea id="output" name="output" type="text" rows=4 cols=70></textarea><br/>
+<input id="testme" type="button" value="Encrypt"/><br/>
+<div id="result"></div>
+</body>
+</html>
