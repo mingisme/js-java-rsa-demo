@@ -1,6 +1,5 @@
 package com.swang.jsjavarsademo.rest;
 
-import com.swang.jsjavarsademo.helper.AesTools;
 import com.swang.jsjavarsademo.helper.IoTools;
 import com.swang.jsjavarsademo.helper.RsaTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/data")
-public class SubmitController {
+public class RsaController {
 
     @Autowired
     private RsaTools rsaTools;
@@ -21,8 +20,8 @@ public class SubmitController {
     @Autowired
     private IoTools ioTools;
 
-    @PostMapping("/commit")
-    public Result createData(@RequestBody DataBean data) {
+    @PostMapping("/rsa")
+    public RsaResult createData(@RequestBody DataBean data) {
 
         String privKeyString = ioTools.readResourceAsString("rsa_2048_priv.pem");
 
@@ -34,13 +33,13 @@ public class SubmitController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Result result = new Result();
+            RsaResult result = new RsaResult();
             result.code = "1";
             result.message = "failedxxx"+new Date();
             return result;
         }
 
-        Result result = new Result();
+        RsaResult result = new RsaResult();
         result.code = "0";
         result.message = "successxx"+new Date();
         return result;

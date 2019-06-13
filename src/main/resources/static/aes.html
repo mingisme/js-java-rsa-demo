@@ -5,20 +5,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script type="text/javascript">
 
-       var iv = CryptoJS.enc.Utf8.parse('phjlknslfdhksldf');
-
-       function encrypt(data, key){
+       function encrypt(data, key, iv){
             var encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
-                iv: iv,
+                iv: CryptoJS.enc.Utf8.parse(iv),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
             return encrypted.toString();
        }
 
-       function decrypt(encrypted, key){
+       function decrypt(encrypted, key, iv){
            var decrypted = CryptoJS.AES.decrypt(encrypted, CryptoJS.enc.Utf8.parse(key), {
-            iv: iv,
+            iv: CryptoJS.enc.Utf8.parse(iv),
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
            });
@@ -29,25 +27,26 @@
        $(function () {
         var data = "This is a secret";
         var key = 'Test1234Test1234';
+        var iv = 'phjlknslfdhksldf';
 
-        var encrypted = encrypt(data,key);
+        var encrypted = encrypt(data,key, iv);
         $("#p1").text("Encrypted: "+encrypted);
         console.log(encrypted)
 
-        encrypted="CZ6cOggrrYjB56laTXKQTZEsEGm+NTEusYosLHQJr8U=";
-        var decrypted = decrypt(encrypted, key);
-        console.log(decrypted);
+        var decrypted = decrypt(encrypted, key, iv);
         $("#p2").text("Decrypted: "+decrypted);
+        console.log(decrypted);
     })
+
 
 
 
     </script>
 </head>
 <body>
-    <div id="p1">
-    </div>
-    <div id="p2">
-    </div>
+<div id="p1">
+</div>
+<div id="p2">
+</div>
 </body>
 </html>

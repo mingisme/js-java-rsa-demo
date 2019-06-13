@@ -7,21 +7,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script type="text/javascript">
 
-       var iv = CryptoJS.enc.Utf8.parse('phjlknslfdhksldf');
-
-
-        function encrypt(data, key){
+       function encrypt(data, key, iv){
             var encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
-                iv: iv,
+                iv: CryptoJS.enc.Utf8.parse(iv),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             });
             return encrypted.toString();
        }
 
-       function decrypt(encrypted, key){
+       function decrypt(encrypted, key, iv){
            var decrypted = CryptoJS.AES.decrypt(encrypted, CryptoJS.enc.Utf8.parse(key), {
-            iv: iv,
+            iv: CryptoJS.enc.Utf8.parse(iv),
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
            });
@@ -46,8 +43,12 @@
 
                    if(message.code==="0"){
                       $('#output').val(message.message);
-                      var plainText=decrypt(message.message, key);
+                      console.log(message.message);
+                      var iv = message.iv;
+                      console.log(message.iv);
+                      var plainText=decrypt(message.message, key, iv);
                       $('#result').html(plainText);
+                      console.log(plainText);
                    }else{
                       alert(message.message);
                    }
