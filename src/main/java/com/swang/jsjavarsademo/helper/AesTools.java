@@ -14,9 +14,9 @@ public class AesTools {
     public static final String ENCODING = "UTF-8";
     private static String ALGO = "AES";
     private static String ALGO_MODE_PATTERN = "AES/CBC/PKCS5Padding";
-    private static String DEF_KEY = "sfsafasdfsafasff";
+    private static String DEF_KEY = "xlhlyqddwrgiskkj";
 
-    private static String DEF_IV = "phjlknslfdhksldf";
+    private static String DEF_IV = "obtswwpwqkxibhej";
     
     private static int validLength = 16;
     
@@ -82,8 +82,8 @@ public class AesTools {
 
     public static void main(String[] args) throws Exception {
         AesTools aesTools = new AesTools();
-        System.out.println(aesTools.encrypt("123456"));
-        System.out.println(aesTools.decrypt(aesTools.encrypt("123456")));
+        System.out.println(aesTools.encrypt("Test1234"));
+        System.out.println(aesTools.decrypt(aesTools.encrypt("Test1234")));
     }
 
 }

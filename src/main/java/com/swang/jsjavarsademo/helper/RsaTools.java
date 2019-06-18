@@ -19,7 +19,8 @@ import java.util.Map;
 public class RsaTools {
 
     public static final String CHAR_ENCODING = "UTF-8";
-    public static final String RSA_ALGORITHM = "RSA/ECB/PKCS1Padding";
+//    public static final String RSA_ALGORITHM = "RSA/ECB/PKCS1Padding";
+    public static final String RSA_ALGORITHM = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
     public static final String RSA = "RSA";
     public static final String PUBLIC_KEY = "PUBLIC_KEY";
     public static final String PRIVATE_KEY = "PRIVATE_KEY";
@@ -85,6 +86,20 @@ public class RsaTools {
         result.put(PUBLIC_KEY, pemEncodingKey(keyMap.get(PUBLIC_KEY)));
         result.put(PRIVATE_KEY, pemEncodingKey(keyMap.get(PRIVATE_KEY)));
         return result;
+    }
+
+    public static void main(String[] args) throws Exception {
+        RsaTools rsaTools = new RsaTools();
+        Map<String, String> keyPair = rsaTools.generatePemKeyPair(2048);
+
+        String pub = keyPair.get(PUBLIC_KEY);
+        String prv  = keyPair.get(PRIVATE_KEY);
+
+        String encrypted = rsaTools.encrypt("Test1234", pub);
+        System.out.println(encrypted);
+        String decrypt = rsaTools.decrypt(encrypted, prv);
+        System.out.println(decrypt);
+
     }
 
 }
